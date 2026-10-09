@@ -24,7 +24,7 @@ jobs:
           node-version: 22
           cache: npm
       - uses: actions/configure-pages@v5
-      - run: npm ci
+      - run: npm ci --ignore-scripts
       - run: npm run check
       - run: npm run build
         env:
