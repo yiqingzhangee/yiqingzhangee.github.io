@@ -1,16 +1,34 @@
 ---
+import '../styles/global.css';
 ---
 
+<!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Bilingual research notes, technical writing, and reviews by Yiqing." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Yiqing's Notebook</title>
+  </head>
+  <body class="selector">
+    <main class="shell hero">
+      <p class="kicker">Research notes · Technical writing · Reviews</p>
+      <h1>Notes for building,<br /><span>reading</span> &amp; thinking.</h1>
+      <p class="intro">关于研究、开源工具与技术实践的缓慢笔记。Choose a language to enter.</p>
+      <section class="locale-grid" aria-label="Choose language">
+        <a class="locale-card" href="/zh/">
+          <span class="locale-label">中文</span>
+          <strong class="locale-name">从这里<br />开始</strong>
+          <span class="locale-arrow" aria-hidden="true">↘</span>
+        </a>
+        <a class="locale-card" href="/en/">
+          <span class="locale-label">English</span>
+          <strong class="locale-name">Enter the<br />notebook</strong>
+          <span class="locale-arrow" aria-hidden="true">↘</span>
+        </a>
+      </section>
+    </main>
+    <footer class="site-footer"><div class="shell">Personal site · Built with Astro · Published from GitHub</div></footer>
+  </body>
 </html>

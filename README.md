@@ -1,43 +1,33 @@
-# Astro Starter Kit: Minimal
+# Yiqing's Notebook
 
-```sh
-npm create astro@latest -- --template minimal
+A bilingual (中文 / English) static personal website for technical writing and reviews, built with Astro and deployed to GitHub Pages.
+
+## Local development
+
+```bash
+npm ci
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Run validation and create the static output:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+npm run check
+npm run build
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Writing
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- Technical posts live in `src/content/posts/{zh,en}/`.
+- Reviews live in `src/content/reviews/{zh,en}/`.
+- Each entry needs the frontmatter defined in `src/content.config.ts`.
+- Pair translations with the same `translationKey`. A post may be published in only one language; the article-level language link appears when its counterpart exists.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Deploying to GitHub Pages
 
-## 🧞 Commands
+1. Create or rename the GitHub repository to `<your-github-username>.github.io`.
+2. Push the `main` branch.
+3. In GitHub repository settings, set **Pages → Build and deployment → Source** to **GitHub Actions**.
+4. The workflow in `.github/workflows/deploy.yml` publishes every push to `main`.
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+The deploy workflow derives the account Pages URL from the repository owner. For a custom domain, set `SITE_URL` to that HTTPS domain in the workflow and add `public/CNAME`.

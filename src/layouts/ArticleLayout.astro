@@ -1,0 +1,27 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import { articlePath, getTranslation, type ArticleKind } from '../lib/content';
+
+interface Props {
+  entry: CollectionEntry<'posts'> | CollectionEntry<'reviews'>;
+  kind: ArticleKind;
+}
+
+const { entry, kind } = Astro.props;
+const otherLang = entry.data.lang === 'zh' ? 'en' : 'zh';
+const translation = await getTranslation(kind, entry.data.translationKey, otherLang);
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description} lang={entry.data.lang}>
+  <article class="article">
+    <header>
+      <p class="kicker">{kind === 'posts' ? (entry.data.lang === 'zh' ? '技术文章' : 'Technical writing') : (entry.data.lang === 'zh' ? '综述' : 'Review')}</p>
+      <h1>{entry.data.title}</h1>
+      <p class="description">{entry.data.description}</p>
+      <p class="article-meta">{entry.data.date.toLocaleDateString(entry.data.lang === 'zh' ? 'zh-CN' : 'en-US')} · {entry.data.tags.join(' · ')}</p>
+      {translation && <a class="translation" href={articlePath(kind, otherLang, translation.id)}>{otherLang === 'zh' ? '阅读中文版本 →' : 'Read in English →'}</a>}
+    </header>
+    <div class="prose"><slot /></div>
+  </article>
+</BaseLayout>

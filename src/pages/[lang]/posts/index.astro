@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getArticles, type Locale } from '../../../lib/content';
+export function getStaticPaths() {
+  return ['zh', 'en'].map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Locale;
+if (lang !== 'zh' && lang !== 'en') return Astro.redirect('/');
+const posts = await getArticles('posts', lang);
+const title = lang === 'zh' ? '技术文章' : 'Technical writing';
+---
+<BaseLayout title={title} lang={lang}>
+  <section class="page">
+    <p class="kicker">{lang === 'zh' ? '知识库' : 'Notebook'}</p>
+    <h1 class="page-title">{title}</h1>
+    <p class="page-lede">{lang === 'zh' ? '把实践过程中值得保留的问题、路径和判断写下来。' : 'Problems, paths, and decisions worth keeping from practice.'}</p>
+    <ul class="article-list">
+      {posts.map((post) => <li><a href={`/${lang}/posts/${post.id.replace(`${lang}/`, '')}/`}><span class="article-meta">{post.data.date.toLocaleDateString()}</span><h2>{post.data.title}</h2><span class="article-type">{post.data.tags[0] ?? 'Note'}</span></a></li>)}
+    </ul>
+  </section>
+</BaseLayout>

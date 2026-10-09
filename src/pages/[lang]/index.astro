@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getArticles, type Locale } from '../../lib/content';
+
+export function getStaticPaths() {
+  return ['zh', 'en'].map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Locale;
+if (lang !== 'zh' && lang !== 'en') return Astro.redirect('/');
+const [posts, reviews] = await Promise.all([getArticles('posts', lang), getArticles('reviews', lang)]);
+const labels = lang === 'zh'
+  ? { title: '慢一点，想深一点。', lede: '记录研究阅读、工程实践与值得反复回看的开源项目。', posts: '技术文章', reviews: '综述与笔记', all: '查看全部 →' }
+  : { title: 'Build slowly. Think clearly.', lede: 'Research reading, engineering practice, and open-source work worth revisiting.', posts: 'Technical writing', reviews: 'Reviews & notes', all: 'View all →' };
+---
+
+<BaseLayout title={`Yiqing's Notebook · ${lang === 'zh' ? '中文' : 'English'}`} description={labels.lede} lang={lang}>
+  <section class="page">
+    <p class="kicker">{lang === 'zh' ? '个人网站' : 'Personal notebook'}</p>
+    <h1 class="page-title">{labels.title}</h1>
+    <p class="page-lede">{labels.lede}</p>
+
+    <h2>{labels.posts}</h2>
+    <ul class="article-list">
+      {posts.slice(0, 3).map((post) => <li><a href={`/${lang}/posts/${post.id.replace(`${lang}/`, '')}/`}><span class="article-meta">{post.data.date.toLocaleDateString()}</span><h2>{post.data.title}</h2><span class="article-type">{post.data.tags[0] ?? 'Note'}</span></a></li>)}
+    </ul>
+    <p><a class="translation" href={`/${lang}/posts/`}>{labels.all}</a></p>
+
+    <h2>{labels.reviews}</h2>
+    <ul class="article-list">
+      {reviews.slice(0, 3).map((review) => <li><a href={`/${lang}/reviews/${review.id.replace(`${lang}/`, '')}/`}><span class="article-meta">{review.data.date.toLocaleDateString()}</span><h2>{review.data.title}</h2><span class="article-type">{review.data.tags[0] ?? 'Review'}</span></a></li>)}
+    </ul>
+  </section>
+</BaseLayout>

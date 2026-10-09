@@ -1,0 +1,38 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang: 'zh' | 'en';
+}
+
+const { title, description, lang } = Astro.props;
+const alternateLocale = lang === 'zh' ? 'en' : 'zh';
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description ?? title} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="shell">
+        <a class="brand" href="/">Yiqing's Notebook</a>
+        <nav class="nav" aria-label="Primary navigation">
+          <a href={`/${lang}/`}>{lang === 'zh' ? '首页' : 'Home'}</a>
+          <a href={`/${lang}/posts/`}>{lang === 'zh' ? '技术文章' : 'Writing'}</a>
+          <a href={`/${lang}/reviews/`}>{lang === 'zh' ? '综述' : 'Reviews'}</a>
+          <a href={`/${alternateLocale}/`}>{alternateLocale === 'zh' ? '中文' : 'English'}</a>
+        </nav>
+      </div>
+    </header>
+    <main class="shell"><slot /></main>
+    <footer class="site-footer"><div class="shell">© {new Date().getFullYear()} · Research notes, technical writing, and slow reading.</div></footer>
+  </body>
+</html>
