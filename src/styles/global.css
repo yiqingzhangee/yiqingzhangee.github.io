@@ -60,6 +60,8 @@ h1, h2, h3 { font-family: Fraunces, "Noto Serif SC", serif; font-weight: 600; le
 .prose h2 { font-size: 1.9rem; margin-top: 2.2em; }
 .prose a { color: var(--moss); }
 .prose code { font: .85em "DM Mono", monospace; background: #e8e1d5; padding: .1em .25em; }
+.prose table { width: 100%; border-collapse: collapse; }
+.prose th, .prose td { border: 1px solid var(--line); padding: .5em .65em; text-align: left; vertical-align: top; }
 .translation { margin-top: 38px; border: 1px solid var(--moss); padding: 14px 16px; display: inline-block; font-size: .75rem; text-decoration: none; color: var(--moss); }
 .translation:hover { background: var(--moss); color: var(--paper); }
 
