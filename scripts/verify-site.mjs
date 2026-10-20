@@ -26,6 +26,8 @@ const zhWriting = await readFile(new URL('zh/writing/index.html', distDirectory)
 const enWriting = await readFile(new URL('en/writing/index.html', distDirectory), 'utf8');
 const zhPosts = await readFile(new URL('zh/posts/index.html', distDirectory), 'utf8');
 const enPosts = await readFile(new URL('en/posts/index.html', distDirectory), 'utf8');
+const zhReviews = await readFile(new URL('zh/reviews/index.html', distDirectory), 'utf8');
+const enReviews = await readFile(new URL('en/reviews/index.html', distDirectory), 'utf8');
 
 for (const [route, html] of [
   ['/', rootHome],
@@ -38,64 +40,81 @@ for (const [route, html] of [
 assert.match(enHome, /Yiqing Zhang/, '/en/ must contain the English name');
 assert.match(enHome, /multimodal/i, '/en/ must contain the English multimodal positioning');
 
-function assertImpactIllustrations(route, html) {
+function assertImpactHasNoFigures(route, html) {
   const impactSection = html.match(
     /<section class="section-band section-impact"[\s\S]*?<\/section>/,
   )?.[0];
 
   assert.ok(impactSection, `${route} must render the selected-impact section`);
 
-  const illustrations = [
-    ...impactSection.matchAll(
-      /<figure class="impact-figure impact-figure-([^"]+)" role="img" aria-label="([^"]+)">([\s\S]*?)<\/figure>/g,
-    ),
-  ];
+  const projects = [...impactSection.matchAll(/<li>([\s\S]*?)<\/li>/g)].map(([, project]) => project);
 
   assert.equal(
-    illustrations.length,
+    projects.length,
     3,
-    `${route} must render one self-contained figure for each selected project`,
-  );
-  assert.equal(
-    new Set(illustrations.map(([, figure]) => figure)).size,
-    3,
-    `${route} must use subject-specific selected-project illustrations`,
+    `${route} selected-impact section must render exactly three projects`,
   );
 
-  assert.doesNotMatch(
-    impactSection,
-    /<img\b[^>]*class="impact-illustration"/,
-    `${route} selected-project figures must not depend on failed image resources`,
-  );
-  assert.doesNotMatch(
-    impactSection,
-    /\bsrc="/,
-    `${route} selected-project figures must not load an image resource`,
-  );
-  assert.doesNotMatch(
-    impactSection,
-    /https?:\/\//,
-    `${route} selected-project figures must not reference an external resource`,
-  );
-
-  for (const [, figure, label, contents] of illustrations) {
+  for (const project of projects) {
     assert.match(
-      figure,
-      /^(?:inference|defense|graph)$/,
-      `${route} selected-project figure must identify its subject`,
+      project,
+      /<h3>[\s\S]*?<\/h3>\s*<p>\s*\S[\s\S]*?<\/p>/,
+      `${route} each selected project must include a non-empty summary paragraph`,
     );
-    assert.ok(label.trim(), `${route} selected-project figures need localized accessible labels`);
+  }
+
+  assert.doesNotMatch(
+    impactSection,
+    /<img\b/,
+    `${route} selected-impact section must not contain images`,
+  );
+  assert.doesNotMatch(
+    impactSection,
+    /<figure\b/,
+    `${route} selected-impact section must not contain figures`,
+  );
+  assert.doesNotMatch(
+    impactSection,
+    /\brole="img"/,
+    `${route} selected-impact section must not contain image roles`,
+  );
+  assert.doesNotMatch(
+    impactSection,
+    /\bimpact-(?:figure|schematic)\b/,
+    `${route} selected-impact section must not contain impact schematic markup`,
+  );
+}
+
+assertImpactHasNoFigures('/', rootHome);
+assertImpactHasNoFigures('/zh/', zhHome);
+assertImpactHasNoFigures('/en/', enHome);
+
+function assertWritingListDescriptions(route, html) {
+  const articleList = html.match(/<ul\b[^>]*\bclass="[^"]*\barticle-list\b[^"]*"[^>]*>([\s\S]*?)<\/ul>/)?.[1];
+
+  assert.notEqual(articleList, undefined, `${route} must render an article list`);
+
+  const rows = [...articleList.matchAll(/<li>([\s\S]*?)<\/li>/g)].map(([, row]) => row);
+
+  for (const row of rows) {
     assert.match(
-      contents,
-      /class="impact-schematic\b/,
-      `${route} selected-project figures must contain self-contained schematic markup`,
+      row,
+      /<p>\s*\S[\s\S]*?<\/p>/,
+      `${route} each writing-list row must include a non-empty description`,
     );
   }
 }
 
-assertImpactIllustrations('/', rootHome);
-assertImpactIllustrations('/zh/', zhHome);
-assertImpactIllustrations('/en/', enHome);
+for (const [route, html] of [
+  ['/zh/writing/', zhWriting],
+  ['/en/writing/', enWriting],
+  ['/zh/posts/', zhPosts],
+  ['/en/posts/', enPosts],
+  ['/zh/reviews/', zhReviews],
+  ['/en/reviews/', enReviews],
+]) {
+  assertWritingListDescriptions(route, html);
+}
 
 for (const [route, html] of [
   ['/zh/writing/', zhWriting],

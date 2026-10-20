@@ -40,8 +40,6 @@ export interface SelectedImpact {
   title: string;
   summary: string;
   evidence?: string;
-  figure: 'inference' | 'defense' | 'graph';
-  figureLabel: string;
 }
 
 export interface Experience {
@@ -188,23 +186,17 @@ export const profileByLocale: Record<Locale, ProfileContent> = {
         title: '多模态风险模型推理优化',
         summary:
           '让多模态风险模型在严格的线上资源约束下稳定运行。围绕显存、延迟、吞吐和视觉 token 成本，将优化从单点参数延伸到端到端推理链路。',
-        figure: 'inference',
-        figureLabel: '视觉 token 网格、显存刻度与吞吐信号构成的多模态模型推理优化示意图',
       },
       {
         title: '对抗评测与分层防御',
         summary:
           '为多模态审核模型建立覆盖攻击样本、误伤控制与回归评估的对抗评测。将防御拆分为可验证的层次，让模型迭代后的风险变化能够被持续观察。',
-        figure: 'defense',
-        figureLabel: '测试样本通过三层防御检查并标记风险信号的对抗评测示意图',
       },
       {
         title: '图风控与团伙发现',
         summary:
           '将实时团伙发现建模为目标社区搜索，而非孤立样本分类。沉淀可复用的图挖掘与图深度学习能力，支撑多类风险关系的持续识别。',
         evidence: '覆盖 20+ 风险场景，支持秒级风险社区发现',
-        figure: 'graph',
-        figureLabel: '连接账号节点中突出标记风险团伙聚类的关系网络示意图',
       },
     ],
     experience: [
@@ -340,23 +332,17 @@ export const profileByLocale: Record<Locale, ProfileContent> = {
         title: 'Multimodal risk-model inference',
         summary:
           'Make multimodal risk models reliable under strict production resource limits. Optimize memory use, latency, throughput, and visual-token cost across the full inference path.',
-        figure: 'inference',
-        figureLabel: 'Multimodal inference optimization schematic with visual-token grid, memory scale, and throughput signals',
       },
       {
         title: 'Adversarial evaluation and layered defense',
         summary:
           'Build adversarial evaluation for multimodal moderation models across attack samples, false-positive controls, and regression checks. Separate defenses into verifiable layers so the risk effect of each model iteration remains visible.',
-        figure: 'defense',
-        figureLabel: 'Adversarial evaluation schematic with test samples passing through three defensive layers and flagged risk signals',
       },
       {
         title: 'Graph-based fraud-ring discovery',
         summary:
           'Model real-time fraud-ring discovery as targeted community search rather than isolated-sample classification. Build reusable graph-mining and graph-learning capabilities for sustained relationship-risk detection.',
         evidence: '20+ risk scenarios with second-level risky-community discovery',
-        figure: 'graph',
-        figureLabel: 'Relationship-network schematic with a highlighted cluster of risky linked accounts',
       },
     ],
     experience: [

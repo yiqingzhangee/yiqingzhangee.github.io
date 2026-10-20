@@ -52,45 +52,6 @@ const labels = {
                 {impact.evidence && <p class="impact-evidence">{impact.evidence}</p>}
               </div>
             </div>
-            <figure class={`impact-figure impact-figure-${impact.figure}`} role="img" aria-label={impact.figureLabel}>
-              <div class={`impact-schematic impact-schematic-${impact.figure}`} aria-hidden="true">
-                {impact.figure === 'inference' && (
-                  <>
-                    <span class="inference-screen"></span>
-                    <span class="inference-grid">
-                      {Array.from({ length: 12 }, (_, token) => <span class={`inference-token inference-token-${token}`}></span>)}
-                    </span>
-                    <span class="inference-scale"></span>
-                    <span class="inference-signal inference-signal-one"></span>
-                    <span class="inference-signal inference-signal-two"></span>
-                  </>
-                )}
-                {impact.figure === 'defense' && (
-                  <>
-                    <span class="defense-document"></span>
-                    <span class="defense-layer defense-layer-one"></span>
-                    <span class="defense-layer defense-layer-two"></span>
-                    <span class="defense-layer defense-layer-three"></span>
-                    <span class="defense-flag"></span>
-                  </>
-                )}
-                {impact.figure === 'graph' && (
-                  <>
-                    <span class="graph-link graph-link-one"></span>
-                    <span class="graph-link graph-link-two"></span>
-                    <span class="graph-link graph-link-three"></span>
-                    <span class="graph-link graph-link-four"></span>
-                    <span class="graph-node graph-node-one"></span>
-                    <span class="graph-node graph-node-two"></span>
-                    <span class="graph-node graph-node-three"></span>
-                    <span class="graph-node graph-node-four"></span>
-                    <span class="graph-node graph-node-five"></span>
-                    <span class="graph-node graph-node-six"></span>
-                    <span class="graph-node graph-node-seven"></span>
-                  </>
-                )}
-              </div>
-            </figure>
           </li>
         ))}
       </ol>
