@@ -56,10 +56,17 @@ function assertImpactHasNoFigures(route, html) {
   );
 
   for (const project of projects) {
+    const paragraphs = [...project.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/g)];
+
+    assert.equal(
+      paragraphs.length,
+      1,
+      `${route} each selected project must include exactly one summary paragraph`,
+    );
     assert.match(
-      project,
-      /<h3>[\s\S]*?<\/h3>\s*<p>\s*\S[\s\S]*?<\/p>/,
-      `${route} each selected project must include a non-empty summary paragraph`,
+      paragraphs[0][1],
+      /\S/,
+      `${route} each selected project summary paragraph must be non-empty`,
     );
   }
 

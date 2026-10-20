@@ -39,7 +39,6 @@ export interface ProfileLinks {
 export interface SelectedImpact {
   title: string;
   summary: string;
-  evidence?: string;
 }
 
 export interface Experience {
@@ -195,8 +194,7 @@ export const profileByLocale: Record<Locale, ProfileContent> = {
       {
         title: '图风控与团伙发现',
         summary:
-          '将实时团伙发现建模为目标社区搜索，而非孤立样本分类。沉淀可复用的图挖掘与图深度学习能力，支撑多类风险关系的持续识别。',
-        evidence: '覆盖 20+ 风险场景，支持秒级风险社区发现',
+          '将实时团伙发现建模为目标社区搜索，而非孤立样本分类。沉淀可复用的图挖掘与图深度学习能力，覆盖 20+ 风险场景并支持秒级风险社区发现。',
       },
     ],
     experience: [
@@ -341,8 +339,7 @@ export const profileByLocale: Record<Locale, ProfileContent> = {
       {
         title: 'Graph-based fraud-ring discovery',
         summary:
-          'Model real-time fraud-ring discovery as targeted community search rather than isolated-sample classification. Build reusable graph-mining and graph-learning capabilities for sustained relationship-risk detection.',
-        evidence: '20+ risk scenarios with second-level risky-community discovery',
+          'Model real-time fraud-ring discovery as targeted community search rather than isolated-sample classification. Build reusable graph-mining and graph-learning capabilities across 20+ risk scenarios with second-level risky-community discovery.',
       },
     ],
     experience: [

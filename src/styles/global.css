@@ -110,7 +110,9 @@ h3 {
   color: var(--muted);
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   min-height: 36px;
+  min-width: 36px;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -123,8 +125,8 @@ h3 {
 
 .contact-link {
   display: inline-grid;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   place-items: center;
   border: 1px solid var(--rule);
   color: var(--teal);
@@ -322,12 +324,6 @@ h3 {
 .contact-grid > div > p {
   font-size: 1rem;
   line-height: 1.7;
-}
-
-.impact-evidence {
-  color: var(--signal-red);
-  font: 500 0.72rem/1.55 var(--mono);
-  margin: 1.25rem 0 0;
 }
 
 .timeline {
