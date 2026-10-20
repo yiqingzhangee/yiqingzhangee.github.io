@@ -17,6 +17,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SITE_URL: https://${{ github.repository_owner }}.github.io
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,8 +29,6 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run check
       - run: npm run build
-        env:
-          SITE_URL: https://${{ github.repository_owner }}.github.io
       - run: npm run verify:site
       - uses: actions/upload-pages-artifact@v3
         with:
