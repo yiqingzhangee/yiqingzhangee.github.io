@@ -2,6 +2,9 @@ import assert from 'node:assert/strict';
 import { access, readFile, readdir } from 'node:fs/promises';
 
 const distDirectory = new URL('../dist/', import.meta.url);
+const expectedSiteOrigin = new URL(
+  process.env.SITE_URL ?? 'http://localhost:4321',
+).origin;
 const requiredRoutes = [
   ['/', 'index.html'],
   ['/zh/', 'zh/index.html'],
@@ -16,6 +19,18 @@ for (const [route, file] of requiredRoutes) {
   await assert.doesNotReject(
     access(new URL(file, distDirectory)),
     `Missing generated route: ${route} (${file})`,
+  );
+
+  const html = await readFile(new URL(file, distDirectory), 'utf8');
+  const canonicalLink = html.match(
+    /<link\b(?=[^>]*\brel="canonical")(?=[^>]*\bhref="[^"]+")[^>]*>/,
+  )?.[0];
+  const canonicalHref = canonicalLink?.match(/\bhref="([^"]+)"/)?.[1];
+
+  assert.equal(
+    canonicalHref,
+    `${expectedSiteOrigin}${route}`,
+    `${route} canonical URL must use ${expectedSiteOrigin}`,
   );
 }
 
