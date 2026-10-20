@@ -40,8 +40,8 @@ export interface SelectedImpact {
   title: string;
   summary: string;
   evidence?: string;
-  image: string;
-  imageAlt: string;
+  figure: 'inference' | 'defense' | 'graph';
+  figureLabel: string;
 }
 
 export interface Experience {
@@ -104,15 +104,6 @@ const links: ProfileLinks = {
   scholar: 'https://scholar.google.com/citations?user=GPcGmDQAAAAJ&hl=en',
   github: 'https://github.com/yiqingzhangee',
 };
-
-const selectedImpactImages = {
-  inference:
-    'https://copilot-cn.bytedance.net/api/ide/v1/tool_text_to_image?prompt=Editorial%20documentary%20photograph%20of%20a%20machine%20learning%20engineer%20reviewing%20a%20single%20abstract%20visual%20token%20grid%20on%20a%20widescreen%20monitor%20in%20a%20calm%20dark%20research%20studio%2C%20subtle%20teal%20and%20graphite%20palette%2C%20natural%20soft%20side%20light%2C%20no%20visible%20text%2C%20no%20logos%2C%20landscape%20composition&image_size=landscape_4_3',
-  defense:
-    'https://copilot-cn.bytedance.net/api/ide/v1/tool_text_to_image?prompt=Editorial%20documentary%20photograph%20of%20a%20red%20team%20researcher%20reviewing%20printed%20image%20moderation%20test%20cases%20at%20a%20large%20table%2C%20sparse%20tabletop%2C%20small%20colored%20annotation%20cards%2C%20dark%20teal%20and%20muted%20red%20accents%2C%20no%20visible%20text%2C%20no%20logos%2C%20natural%20window%20light%2C%20landscape%20composition&image_size=landscape_4_3',
-  graph:
-    'https://copilot-cn.bytedance.net/api/ide/v1/tool_text_to_image?prompt=Editorial%20documentary%20photograph%20of%20an%20analyst%20examining%20a%20network%20of%20connected%20account%20nodes%20on%20a%20large%20wall%20display%2C%20a%20few%20muted%20red%20risk%20clusters%20emerging%20from%20a%20graphite%20network%2C%20calm%20research%20lab%2C%20no%20readable%20text%2C%20no%20logos%2C%20natural%20side%20light%2C%20landscape%20composition&image_size=landscape_4_3',
-} as const;
 
 const publications: readonly Publication[] = [
   {
@@ -197,23 +188,23 @@ export const profileByLocale: Record<Locale, ProfileContent> = {
         title: '多模态风险模型推理优化',
         summary:
           '让多模态风险模型在严格的线上资源约束下稳定运行。围绕显存、延迟、吞吐和视觉 token 成本，将优化从单点参数延伸到端到端推理链路。',
-        image: selectedImpactImages.inference,
-        imageAlt: '研究人员在显示视觉 token 网格的宽屏前审阅多模态模型推理',
+        figure: 'inference',
+        figureLabel: '视觉 token 网格、显存刻度与吞吐信号构成的多模态模型推理优化示意图',
       },
       {
         title: '对抗评测与分层防御',
         summary:
           '为多模态审核模型建立覆盖攻击样本、误伤控制与回归评估的对抗评测。将防御拆分为可验证的层次，让模型迭代后的风险变化能够被持续观察。',
-        image: selectedImpactImages.defense,
-        imageAlt: '研究人员在桌前审阅多模态审核模型的对抗测试材料',
+        figure: 'defense',
+        figureLabel: '测试样本通过三层防御检查并标记风险信号的对抗评测示意图',
       },
       {
         title: '图风控与团伙发现',
         summary:
           '将实时团伙发现建模为目标社区搜索，而非孤立样本分类。沉淀可复用的图挖掘与图深度学习能力，支撑多类风险关系的持续识别。',
         evidence: '覆盖 20+ 风险场景，支持秒级风险社区发现',
-        image: selectedImpactImages.graph,
-        imageAlt: '分析人员在关系网络显示屏前识别风险团伙聚类',
+        figure: 'graph',
+        figureLabel: '连接账号节点中突出标记风险团伙聚类的关系网络示意图',
       },
     ],
     experience: [
@@ -349,23 +340,23 @@ export const profileByLocale: Record<Locale, ProfileContent> = {
         title: 'Multimodal risk-model inference',
         summary:
           'Make multimodal risk models reliable under strict production resource limits. Optimize memory use, latency, throughput, and visual-token cost across the full inference path.',
-        image: selectedImpactImages.inference,
-        imageAlt: 'Researcher reviewing multimodal model inference on a widescreen visual-token display',
+        figure: 'inference',
+        figureLabel: 'Multimodal inference optimization schematic with visual-token grid, memory scale, and throughput signals',
       },
       {
         title: 'Adversarial evaluation and layered defense',
         summary:
           'Build adversarial evaluation for multimodal moderation models across attack samples, false-positive controls, and regression checks. Separate defenses into verifiable layers so the risk effect of each model iteration remains visible.',
-        image: selectedImpactImages.defense,
-        imageAlt: 'Researcher reviewing adversarial test materials for a multimodal moderation model',
+        figure: 'defense',
+        figureLabel: 'Adversarial evaluation schematic with test samples passing through three defensive layers and flagged risk signals',
       },
       {
         title: 'Graph-based fraud-ring discovery',
         summary:
           'Model real-time fraud-ring discovery as targeted community search rather than isolated-sample classification. Build reusable graph-mining and graph-learning capabilities for sustained relationship-risk detection.',
         evidence: '20+ risk scenarios with second-level risky-community discovery',
-        image: selectedImpactImages.graph,
-        imageAlt: 'Analyst identifying risky fraud-ring clusters on a relationship-network display',
+        figure: 'graph',
+        figureLabel: 'Relationship-network schematic with a highlighted cluster of risky linked accounts',
       },
     ],
     experience: [

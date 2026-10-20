@@ -47,35 +47,49 @@ function assertImpactIllustrations(route, html) {
 
   const illustrations = [
     ...impactSection.matchAll(
-      /<img class="impact-illustration" src="([^"]+)" alt="([^"]*)">/g,
+      /<figure class="impact-figure impact-figure-([^"]+)" role="img" aria-label="([^"]+)">([\s\S]*?)<\/figure>/g,
     ),
   ];
 
   assert.equal(
     illustrations.length,
     3,
-    `${route} must render one illustration for each selected project`,
+    `${route} must render one self-contained figure for each selected project`,
   );
   assert.equal(
-    new Set(illustrations.map(([, src]) => src)).size,
+    new Set(illustrations.map(([, figure]) => figure)).size,
     3,
     `${route} must use subject-specific selected-project illustrations`,
   );
 
-  for (const [, source, alt] of illustrations) {
-    const imageSource = source.replaceAll('&amp;', '&');
+  assert.doesNotMatch(
+    impactSection,
+    /<img\b[^>]*class="impact-illustration"/,
+    `${route} selected-project figures must not depend on failed image resources`,
+  );
+  assert.doesNotMatch(
+    impactSection,
+    /\bsrc="/,
+    `${route} selected-project figures must not load an image resource`,
+  );
+  assert.doesNotMatch(
+    impactSection,
+    /https?:\/\//,
+    `${route} selected-project figures must not reference an external resource`,
+  );
 
+  for (const [, figure, label, contents] of illustrations) {
     assert.match(
-      imageSource,
-      /^https:\/\/copilot-cn\.bytedance\.net\/api\/ide\/v1\/tool_text_to_image\?/,
-      `${route} selected-project illustrations must use the approved image source`,
+      figure,
+      /^(?:inference|defense|graph)$/,
+      `${route} selected-project figure must identify its subject`,
     );
+    assert.ok(label.trim(), `${route} selected-project figures need localized accessible labels`);
     assert.match(
-      imageSource,
-      /(?:\?|&)image_size=landscape_4_3$/,
-      `${route} selected-project illustrations must use the landscape_4_3 format`,
+      contents,
+      /class="impact-schematic\b/,
+      `${route} selected-project figures must contain self-contained schematic markup`,
     );
-    assert.ok(alt.trim(), `${route} selected-project illustrations need localized alt text`);
   }
 }
 
