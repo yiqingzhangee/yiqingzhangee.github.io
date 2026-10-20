@@ -1,0 +1,31 @@
+---
+import { profileByLocale, type Locale } from '../data/profile';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const profile = profileByLocale[lang];
+const homeHref = lang === 'zh' ? '/' : '/en/';
+const alternateLang = lang === 'zh' ? 'en' : 'zh';
+const alternateHref = alternateLang === 'zh' ? '/' : '/en/';
+---
+
+<header class="site-header">
+  <div class="shell">
+    <a class="brand" href={homeHref}>{profile.displayName}</a>
+    <nav class="nav" aria-label={lang === 'zh' ? '主导航' : 'Primary navigation'}>
+      <a href={`${homeHref}#experience`}>{profile.copy.nav.experience}</a>
+      <a href={`${homeHref}#research`}>{profile.copy.nav.research}</a>
+      <a href={`/${lang}/writing/`}>{profile.copy.nav.writing}</a>
+      <a href={`/${lang}/about/`}>{profile.copy.nav.resume}</a>
+      <a href={alternateHref} lang={alternateLang}>{profile.copy.nav.alternateLocale}</a>
+      <a class="contact-link" href={profile.links.email} aria-label={profile.copy.nav.contact}>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3.5 5.5h17v13h-17zM4.5 6.5 12 13l7.5-6.5" />
+        </svg>
+      </a>
+    </nav>
+  </div>
+</header>

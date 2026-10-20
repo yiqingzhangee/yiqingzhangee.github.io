@@ -1,0 +1,136 @@
+---
+import { profileByLocale, type Locale } from '../data/profile';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const profile = profileByLocale[lang];
+const isChinese = lang === 'zh';
+const labels = {
+  evidence: isChinese ? '经历与研究背景' : 'Experience and research background',
+  publications: isChinese ? '公开发表' : 'Selected papers',
+  scholar: isChinese ? 'Google Scholar' : 'Google Scholar',
+  github: 'GitHub',
+};
+---
+
+<div class="home">
+  <section class="home-hero" aria-labelledby="home-title">
+    <div class="shell hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">{profile.role}</p>
+        <h1 id="home-title">{profile.displayName}</h1>
+        <p class="hero-intro">{profile.intro}</p>
+        <div class="hero-actions">
+          <a class="button-link button-link-primary" href="#impact">{profile.copy.actions.viewWork}</a>
+          <a class="text-link" href={profile.links.email}>{profile.copy.actions.email} <span aria-hidden="true">-&gt;</span></a>
+        </div>
+      </div>
+      <aside class="evidence-rail" aria-label={labels.evidence}>
+        <p class="eyebrow">{labels.evidence}</p>
+        <ul>
+          {profile.evidence.map((item) => <li>{item}</li>)}
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section-band section-impact" id="impact" aria-labelledby="impact-title">
+    <div class="shell">
+      <p class="eyebrow">01</p>
+      <h2 id="impact-title">{profile.copy.sections.impact}</h2>
+      <ol class="impact-list">
+        {profile.selectedImpact.map((impact, index) => (
+          <li>
+            <span class="item-index" aria-hidden="true">0{index + 1}</span>
+            <div>
+              <h3>{impact.title}</h3>
+              <p>{impact.summary}</p>
+            </div>
+            {impact.evidence && <p class="impact-evidence">{impact.evidence}</p>}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section-band section-career" id="experience" aria-labelledby="experience-title">
+    <div class="shell">
+      <p class="eyebrow">02</p>
+      <h2 id="experience-title">{profile.copy.sections.career}</h2>
+      <ol class="timeline">
+        {profile.experience.map((experience) => (
+          <li>
+            <time>{experience.period}</time>
+            <div>
+              <p class="timeline-kind">{experience.kind === 'industry' ? (isChinese ? '产业实践' : 'Industry') : (isChinese ? '学术研究' : 'Research')}</p>
+              <h3>{experience.organization}</h3>
+              <p class="timeline-role">{experience.role}</p>
+              <p>{experience.summary}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section-band section-research" id="research" aria-labelledby="research-title">
+    <div class="shell research-grid">
+      <div>
+        <p class="eyebrow">03</p>
+        <h2 id="research-title">{profile.copy.sections.research}</h2>
+        <p class="research-summary">{profile.researchSummary}</p>
+        <a class="text-link" href={profile.links.scholar} target="_blank" rel="noreferrer">{labels.scholar} <span aria-hidden="true">-&gt;</span></a>
+      </div>
+      <div>
+        <p class="eyebrow">{labels.publications}</p>
+        <ol class="publication-list">
+          {profile.publications.slice(0, 3).map((publication) => (
+            <li>
+              <p class="publication-meta">{publication.year} · {publication.venue}</p>
+              <h3><a href={publication.url} target="_blank" rel="noreferrer">{publication.title}</a></h3>
+              <p>{publication.authors}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-band section-writing" aria-labelledby="writing-title">
+    <div class="shell">
+      <p class="eyebrow">04</p>
+      <h2 id="writing-title">{profile.copy.sections.writing}</h2>
+      <article class="writing-feature">
+        <a class="article-preview-media" href={profile.featuredWriting.href}>
+          <img src={profile.featuredWriting.image} alt={profile.featuredWriting.imageAlt} />
+        </a>
+        <div class="writing-feature-copy">
+          <p class="article-type">{isChinese ? '专题综述' : 'Featured review'}</p>
+          <h3><a href={profile.featuredWriting.href}>{profile.featuredWriting.title}</a></h3>
+          <p>{profile.featuredWriting.description}</p>
+          <a class="text-link" href={profile.featuredWriting.href}>{profile.copy.actions.readArticle} <span aria-hidden="true">-&gt;</span></a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="contact-band" aria-labelledby="contact-title">
+    <div class="shell contact-grid">
+      <div>
+        <p class="eyebrow">05</p>
+        <h2 id="contact-title">{profile.copy.contact.heading}</h2>
+      </div>
+      <div>
+        <p>{profile.copy.contact.body}</p>
+        <div class="contact-actions">
+          <a class="button-link button-link-light" href={profile.links.email}>{profile.copy.actions.email}</a>
+          <a class="text-link text-link-light" href={profile.links.scholar} target="_blank" rel="noreferrer">{labels.scholar} <span aria-hidden="true">-&gt;</span></a>
+          <a class="text-link text-link-light" href={profile.links.github} target="_blank" rel="noreferrer">{labels.github} <span aria-hidden="true">-&gt;</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
