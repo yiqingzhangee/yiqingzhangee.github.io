@@ -44,12 +44,17 @@ const labels = {
       <ol class="impact-list">
         {profile.selectedImpact.map((impact, index) => (
           <li>
-            <span class="item-index" aria-hidden="true">0{index + 1}</span>
-            <div>
-              <h3>{impact.title}</h3>
-              <p>{impact.summary}</p>
+            <div class="impact-copy">
+              <span class="item-index" aria-hidden="true">0{index + 1}</span>
+              <div>
+                <h3>{impact.title}</h3>
+                <p>{impact.summary}</p>
+                {impact.evidence && <p class="impact-evidence">{impact.evidence}</p>}
+              </div>
             </div>
-            {impact.evidence && <p class="impact-evidence">{impact.evidence}</p>}
+            <figure class="impact-figure">
+              <img class="impact-illustration" src={impact.image} alt={impact.imageAlt} />
+            </figure>
           </li>
         ))}
       </ol>

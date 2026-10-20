@@ -38,6 +38,51 @@ for (const [route, html] of [
 assert.match(enHome, /Yiqing Zhang/, '/en/ must contain the English name');
 assert.match(enHome, /multimodal/i, '/en/ must contain the English multimodal positioning');
 
+function assertImpactIllustrations(route, html) {
+  const impactSection = html.match(
+    /<section class="section-band section-impact"[\s\S]*?<\/section>/,
+  )?.[0];
+
+  assert.ok(impactSection, `${route} must render the selected-impact section`);
+
+  const illustrations = [
+    ...impactSection.matchAll(
+      /<img class="impact-illustration" src="([^"]+)" alt="([^"]*)">/g,
+    ),
+  ];
+
+  assert.equal(
+    illustrations.length,
+    3,
+    `${route} must render one illustration for each selected project`,
+  );
+  assert.equal(
+    new Set(illustrations.map(([, src]) => src)).size,
+    3,
+    `${route} must use subject-specific selected-project illustrations`,
+  );
+
+  for (const [, source, alt] of illustrations) {
+    const imageSource = source.replaceAll('&amp;', '&');
+
+    assert.match(
+      imageSource,
+      /^https:\/\/copilot-cn\.bytedance\.net\/api\/ide\/v1\/tool_text_to_image\?/,
+      `${route} selected-project illustrations must use the approved image source`,
+    );
+    assert.match(
+      imageSource,
+      /(?:\?|&)image_size=landscape_4_3$/,
+      `${route} selected-project illustrations must use the landscape_4_3 format`,
+    );
+    assert.ok(alt.trim(), `${route} selected-project illustrations need localized alt text`);
+  }
+}
+
+assertImpactIllustrations('/', rootHome);
+assertImpactIllustrations('/zh/', zhHome);
+assertImpactIllustrations('/en/', enHome);
+
 for (const [route, html] of [
   ['/zh/writing/', zhWriting],
   ['/en/writing/', enWriting],
