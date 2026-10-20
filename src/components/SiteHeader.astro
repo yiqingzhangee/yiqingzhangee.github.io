@@ -9,7 +9,12 @@ const { lang } = Astro.props;
 const profile = profileByLocale[lang];
 const homeHref = lang === 'zh' ? '/' : '/en/';
 const alternateLang = lang === 'zh' ? 'en' : 'zh';
-const alternateHref = alternateLang === 'zh' ? '/' : '/en/';
+const currentPath = Astro.url.pathname;
+let alternateHref = alternateLang === 'zh' ? '/' : '/en/';
+
+if (currentPath !== '/' && currentPath !== '/zh/' && currentPath !== '/en/') {
+  alternateHref = currentPath.replace(`/${lang}/`, `/${alternateLang}/`);
+}
 ---
 
 <header class="site-header">

@@ -22,6 +22,8 @@ for (const [route, file] of requiredRoutes) {
 const rootHome = await readFile(new URL('index.html', distDirectory), 'utf8');
 const zhHome = await readFile(new URL('zh/index.html', distDirectory), 'utf8');
 const enHome = await readFile(new URL('en/index.html', distDirectory), 'utf8');
+const zhAbout = await readFile(new URL('zh/about/index.html', distDirectory), 'utf8');
+const enAbout = await readFile(new URL('en/about/index.html', distDirectory), 'utf8');
 const zhWriting = await readFile(new URL('zh/writing/index.html', distDirectory), 'utf8');
 const enWriting = await readFile(new URL('en/writing/index.html', distDirectory), 'utf8');
 const zhPosts = await readFile(new URL('zh/posts/index.html', distDirectory), 'utf8');
@@ -39,6 +41,31 @@ for (const [route, html] of [
 
 assert.match(enHome, /Yiqing Zhang/, '/en/ must contain the English name');
 assert.match(enHome, /multimodal/i, '/en/ must contain the English multimodal positioning');
+
+function assertLocaleLink(route, html, alternateLang, alternateHref) {
+  const escapedHref = alternateHref.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const localeLink = new RegExp(
+    `<a\\b(?=[^>]*\\bhref="${escapedHref}")(?=[^>]*\\blang="${alternateLang}")[^>]*>`,
+  );
+
+  assert.match(
+    html,
+    localeLink,
+    `${route} locale switch must link to ${alternateHref}`,
+  );
+}
+
+for (const [route, html, alternateLang, alternateHref] of [
+  ['/', rootHome, 'en', '/en/'],
+  ['/zh/', zhHome, 'en', '/en/'],
+  ['/en/', enHome, 'zh', '/'],
+  ['/zh/about/', zhAbout, 'en', '/en/about/'],
+  ['/en/about/', enAbout, 'zh', '/zh/about/'],
+  ['/zh/writing/', zhWriting, 'en', '/en/writing/'],
+  ['/en/writing/', enWriting, 'zh', '/zh/writing/'],
+]) {
+  assertLocaleLink(route, html, alternateLang, alternateHref);
+}
 
 function assertImpactHasNoFigures(route, html) {
   const impactSection = html.match(
