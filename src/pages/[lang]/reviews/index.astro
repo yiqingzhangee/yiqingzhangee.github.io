@@ -1,4 +1,5 @@
 ---
+import ArticleList from '../../../components/ArticleList.astro';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getArticles, type Locale } from '../../../lib/content';
 export function getStaticPaths() {
@@ -7,6 +8,7 @@ export function getStaticPaths() {
 const lang = Astro.params.lang as Locale;
 if (lang !== 'zh' && lang !== 'en') return Astro.redirect('/');
 const reviews = await getArticles('reviews', lang);
+const entries = reviews.map((review) => ({ ...review, kind: 'reviews' as const }));
 const title = lang === 'zh' ? '综述与笔记' : 'Reviews & notes';
 ---
 <BaseLayout title={title} lang={lang}>
@@ -14,8 +16,6 @@ const title = lang === 'zh' ? '综述与笔记' : 'Reviews & notes';
     <p class="kicker">{lang === 'zh' ? '慢读' : 'Slow reading'}</p>
     <h1 class="page-title">{title}</h1>
     <p class="page-lede">{lang === 'zh' ? '对论文、工具与开源项目的结构化理解。' : 'Structured notes on papers, tools, and open-source projects.'}</p>
-    <ul class="article-list">
-      {reviews.map((review) => <li><a href={`/${lang}/reviews/${review.id.replace(`${lang}/`, '')}/`}><span class="article-meta">{review.data.date.toLocaleDateString()}</span><h2>{review.data.title}</h2><span class="article-type">{review.data.tags[0] ?? 'Review'}</span></a></li>)}
-    </ul>
+    <ArticleList entries={entries} lang={lang} />
   </section>
 </BaseLayout>

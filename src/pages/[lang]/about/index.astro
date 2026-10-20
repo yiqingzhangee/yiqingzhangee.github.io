@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { profileByLocale, type Locale } from '../../../data/profile';
+
+export function getStaticPaths() {
+  return ['zh', 'en'].map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Locale;
+if (lang !== 'zh' && lang !== 'en') return Astro.redirect('/');
+const profile = profileByLocale[lang];
+const labels = lang === 'zh'
+  ? {
+    summary: '专业概述',
+    experience: '职业经历',
+    education: '教育经历',
+    publications: '代表论文',
+    toolkit: '核心方向与技术栈',
+    contact: '联系',
+    scholar: 'Google Scholar',
+    github: 'GitHub',
+  }
+  : {
+    summary: 'Professional summary',
+    experience: 'Experience',
+    education: 'Education',
+    publications: 'Selected publications',
+    toolkit: 'Core areas and toolkit',
+    contact: 'Contact',
+    scholar: 'Google Scholar',
+    github: 'GitHub',
+  };
+---
+
+<BaseLayout title={`${profile.copy.nav.resume} | ${profile.displayName}`} description={profile.summary} lang={lang}>
+  <article class="page">
+    <p class="kicker">{profile.copy.nav.resume}</p>
+    <h1 class="page-title">{profile.displayName}</h1>
+
+    <section aria-labelledby="summary-title">
+      <h2 id="summary-title">{labels.summary}</h2>
+      <p class="page-lede">{profile.summary}</p>
+    </section>
+
+    <section aria-labelledby="experience-title">
+      <h2 id="experience-title">{labels.experience}</h2>
+      <ol class="timeline">
+        {profile.experience.map((experience) => (
+          <li>
+            <time>{experience.period}</time>
+            <div>
+              <h3>{experience.organization}</h3>
+              <p class="timeline-role">{experience.role}</p>
+              <p>{experience.summary}</p>
+              {experience.highlights.length > 0 && (
+                <ul>
+                  {experience.highlights.map((highlight) => <li>{highlight}</li>)}
+                </ul>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section aria-labelledby="education-title">
+      <h2 id="education-title">{labels.education}</h2>
+      <ul class="publication-list">
+        {profile.education.map((education) => (
+          <li>
+            <h3>{education.degree}</h3>
+            <p>{education.institution} · {education.period}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section aria-labelledby="publications-title">
+      <h2 id="publications-title">{labels.publications}</h2>
+      <ol class="publication-list">
+        {profile.publications.map((publication) => (
+          <li>
+            <p class="publication-meta">{publication.year} · {publication.venue}</p>
+            <h3><a href={publication.url} target="_blank" rel="noreferrer">{publication.title}</a></h3>
+            <p>{publication.authors}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section aria-labelledby="toolkit-title">
+      <h2 id="toolkit-title">{labels.toolkit}</h2>
+      <ul class="publication-list">
+        {profile.toolkit.map((toolkit) => (
+          <li>
+            <h3>{toolkit.area}</h3>
+            <p>{toolkit.items.join(' · ')}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section aria-labelledby="contact-title">
+      <h2 id="contact-title">{labels.contact}</h2>
+      <p>
+        <a href={profile.links.email}>{profile.copy.actions.email}</a>
+        {' · '}
+        <a href={profile.links.scholar} target="_blank" rel="noreferrer">{labels.scholar}</a>
+        {' · '}
+        <a href={profile.links.github} target="_blank" rel="noreferrer">{labels.github}</a>
+      </p>
+    </section>
+  </article>
+</BaseLayout>

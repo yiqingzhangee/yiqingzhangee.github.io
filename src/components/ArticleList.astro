@@ -1,0 +1,29 @@
+---
+import { articlePath, type Locale, type WritingEntry } from '../lib/content';
+
+interface Props {
+  entries: WritingEntry[];
+  lang: Locale;
+}
+
+const { entries, lang } = Astro.props;
+const labels = lang === 'zh'
+  ? { posts: '技术文章', reviews: '综述' }
+  : { posts: 'Technical writing', reviews: 'Review' };
+const dateLocale = lang === 'zh' ? 'zh-CN' : 'en-US';
+---
+
+<ul class="article-list">
+  {entries.map((entry) => (
+    <li>
+      <a href={articlePath(entry.kind, lang, entry.id)}>
+        <span class="article-meta">{entry.data.date.toLocaleDateString(dateLocale)}</span>
+        <div>
+          <h2>{entry.data.title}</h2>
+          <p>{entry.data.description}</p>
+        </div>
+        <span class="article-type">{labels[entry.kind]}</span>
+      </a>
+    </li>
+  ))}
+</ul>

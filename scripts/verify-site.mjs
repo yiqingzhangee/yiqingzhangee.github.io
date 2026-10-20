@@ -22,6 +22,10 @@ for (const [route, file] of requiredRoutes) {
 const rootHome = await readFile(new URL('index.html', distDirectory), 'utf8');
 const zhHome = await readFile(new URL('zh/index.html', distDirectory), 'utf8');
 const enHome = await readFile(new URL('en/index.html', distDirectory), 'utf8');
+const zhWriting = await readFile(new URL('zh/writing/index.html', distDirectory), 'utf8');
+const enWriting = await readFile(new URL('en/writing/index.html', distDirectory), 'utf8');
+const zhPosts = await readFile(new URL('zh/posts/index.html', distDirectory), 'utf8');
+const enPosts = await readFile(new URL('en/posts/index.html', distDirectory), 'utf8');
 
 for (const [route, html] of [
   ['/', rootHome],
@@ -33,6 +37,28 @@ for (const [route, html] of [
 
 assert.match(enHome, /Yiqing Zhang/, '/en/ must contain the English name');
 assert.match(enHome, /multimodal/i, '/en/ must contain the English multimodal positioning');
+
+for (const [route, html] of [
+  ['/zh/writing/', zhWriting],
+  ['/en/writing/', enWriting],
+]) {
+  assert.match(
+    html,
+    /href="\/(?:zh|en)\/reviews\/enterprise-agent-security-lifecycle\/"/,
+    `${route} must link to the agent-security review`,
+  );
+}
+
+assert.doesNotMatch(
+  zhPosts,
+  /从一篇文章开始：双语技术博客的最小工作流/,
+  '/zh/posts/ must not contain the removed bilingual-workflow article',
+);
+assert.doesNotMatch(
+  enPosts,
+  /Start with one post: a minimal workflow for bilingual writing/,
+  '/en/posts/ must not contain the removed bilingual-workflow article',
+);
 
 async function collectHtml(directory) {
   const files = [];
