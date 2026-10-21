@@ -82,7 +82,14 @@ for (const [route, html, alternateLang, alternateHref] of [
   assertLocaleLink(route, html, alternateLang, alternateHref);
 }
 
-function assertImpactHasNoFigures(route, html) {
+function extractHeadingText(item) {
+  return item
+    .match(/<h3\b[^>]*>([\s\S]*?)<\/h3>/)?.[1]
+    .replace(/<[^>]+>/g, '')
+    .trim();
+}
+
+function assertImpactHasNoFigures(route, html, expectedTitles) {
   const impactSection = html.match(
     /<section class="section-band section-impact"[\s\S]*?<\/section>/,
   )?.[0];
@@ -95,6 +102,11 @@ function assertImpactHasNoFigures(route, html) {
     projects.length,
     6,
     `${route} selected-impact section must render exactly six projects`,
+  );
+  assert.deepEqual(
+    projects.map(extractHeadingText),
+    expectedTitles,
+    `${route} selected projects must match the approved order`,
   );
 
   for (const project of projects) {
@@ -134,11 +146,53 @@ function assertImpactHasNoFigures(route, html) {
   );
 }
 
-assertImpactHasNoFigures('/', rootHome);
-assertImpactHasNoFigures('/zh/', zhHome);
-assertImpactHasNoFigures('/en/', enHome);
+const zhProjectTitles = [
+  '多模态审核模型对抗评测与分层防御',
+  'VLM 端到端推理优化',
+  'LLM 数据清洗与轻量模型持续重训',
+  '多模态内容风险治理与反馈闭环',
+  '国际化电商营销风险感知平台',
+  '支付风险图谱与欺诈团伙挖掘',
+];
+const enProjectTitles = [
+  'Adversarial evaluation and layered defense',
+  'End-to-end VLM inference optimization',
+  'LLM data cleaning and continual lightweight-model retraining',
+  'Multimodal content-risk governance and feedback',
+  'International e-commerce marketing-risk platform',
+  'Payment-risk graphs and fraud-ring mining',
+];
 
-function assertPublicationIntroductions(route, html, sectionPattern) {
+assertImpactHasNoFigures('/', rootHome, zhProjectTitles);
+assertImpactHasNoFigures('/zh/', zhHome, zhProjectTitles);
+assertImpactHasNoFigures('/en/', enHome, enProjectTitles);
+
+const publicationTitles = [
+  'eRiskCom: An E-commerce Risky Community Detection Platform',
+  'Spectral Analysis of Epidemic Thresholds of Temporal Networks',
+  'Human Interactive Patterns in Temporal Networks',
+  'Temporal Dynamics and Impact of Event Interactions in Cyber-Social Populations',
+  'Characterizing Bursts of Aggregate Pairs with Individual Poissonian Activity and Preferential Mobility',
+  'Identifying Familiar Strangers in Human Encounter Networks',
+];
+const zhPublicationMarkers = [
+  /图扩展、分区、剪枝/,
+  /谱结构/,
+  /Leader、Queue 与 Feedback/,
+  /群体事件交互/,
+  /偏好移动/,
+  /熟悉陌生人/,
+];
+const enPublicationMarkers = [
+  /graph expansion, partitioning, and pruning/i,
+  /spectral structure/i,
+  /Leader, Queue, and Feedback/,
+  /group event interactions/i,
+  /preferential mobility/i,
+  /familiar-stranger classifier/i,
+];
+
+function assertPublicationIntroductions(route, html, sectionPattern, summaryMarkers) {
   const section = html.match(sectionPattern)?.[0];
 
   assert.ok(section, `${route} must render the selected-publications section`);
@@ -156,36 +210,48 @@ function assertPublicationIntroductions(route, html, sectionPattern) {
     6,
     `${route} selected-publications section must render exactly six papers`,
   );
+  assert.deepEqual(
+    publications.map(extractHeadingText),
+    publicationTitles,
+    `${route} selected papers must match the approved order`,
+  );
 
-  for (const publication of publications) {
+  for (const [index, publication] of publications.entries()) {
     assert.match(
       publication,
       /<p\b[^>]*\bclass="[^"]*\bpublication-summary\b[^"]*"[^>]*>\s*\S[\s\S]*?<\/p>/,
       `${route} each selected paper must include a non-empty research introduction`,
     );
+    assert.match(
+      publication,
+      summaryMarkers[index],
+      `${route} paper ${index + 1} must render the correct localized introduction`,
+    );
   }
 }
 
-for (const [route, html] of [
-  ['/', rootHome],
-  ['/zh/', zhHome],
-  ['/en/', enHome],
+for (const [route, html, summaryMarkers] of [
+  ['/', rootHome, zhPublicationMarkers],
+  ['/zh/', zhHome, zhPublicationMarkers],
+  ['/en/', enHome, enPublicationMarkers],
 ]) {
   assertPublicationIntroductions(
     route,
     html,
     /<section class="section-band section-research"[\s\S]*?<\/section>/,
+    summaryMarkers,
   );
 }
 
-for (const [route, html] of [
-  ['/zh/about/', zhAbout],
-  ['/en/about/', enAbout],
+for (const [route, html, summaryMarkers] of [
+  ['/zh/about/', zhAbout, zhPublicationMarkers],
+  ['/en/about/', enAbout, enPublicationMarkers],
 ]) {
   assertPublicationIntroductions(
     route,
     html,
     /<section aria-labelledby="publications-title">[\s\S]*?<\/section>/,
+    summaryMarkers,
   );
 }
 

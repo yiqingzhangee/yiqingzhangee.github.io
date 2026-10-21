@@ -111,8 +111,8 @@ const publications: readonly Publication[] = [
     year: 2022,
     url: 'https://doi.org/10.1007/s00778-021-00723-z',
     summary: {
-      zh: '将风险团伙识别转化为面向种子实体的社区搜索，并把图算法、索引与交互分析整合为电商风险发现平台，连接图研究与生产风控。',
-      en: 'Turns risky-group detection into seed-oriented community search and combines graph algorithms, indexing, and interactive analysis in a production e-commerce risk platform.',
+      zh: '围绕种子风险实体构建电商风险社区发现流程，通过图扩展、分区、剪枝和 Top-K 风险评分，从大规模关系网络中定位高风险社区并支持生产分析。',
+      en: 'Builds an e-commerce risky-community discovery pipeline around seed entities, using graph expansion, partitioning, and pruning with Top-K risk scoring to locate high-risk communities at scale.',
     },
   },
   {
@@ -133,8 +133,8 @@ const publications: readonly Publication[] = [
     year: 2015,
     url: 'https://doi.org/10.1109/TSMC.2014.2360505',
     summary: {
-      zh: '利用真实交互数据分析人类接触的时间异质性，刻画活动节律、持续时间与时间路径之间的关系，为时序网络建模提供实证基础。',
-      en: 'Uses empirical interaction data to study temporal heterogeneity in human contact, linking activity rhythms, duration, and temporal paths to ground temporal-network models in observed behavior.',
+      zh: '在六个真实时序网络中分析高阶时序模体，归纳 Leader、Queue 与 Feedback 三类交互模式，揭示静态拓扑无法观察的群体行为结构。',
+      en: 'Analyzes higher-order temporal motifs across six empirical networks and identifies Leader, Queue, and Feedback patterns that static topology alone cannot reveal.',
     },
   },
   {
