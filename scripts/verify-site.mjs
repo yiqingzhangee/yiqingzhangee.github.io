@@ -217,13 +217,17 @@ function assertPublicationIntroductions(route, html, sectionPattern, summaryMark
   );
 
   for (const [index, publication] of publications.entries()) {
+    const summary = publication.match(
+      /<p\b[^>]*\bclass="[^"]*\bpublication-summary\b[^"]*"[^>]*>([\s\S]*?)<\/p>/,
+    )?.[1];
+
     assert.match(
-      publication,
-      /<p\b[^>]*\bclass="[^"]*\bpublication-summary\b[^"]*"[^>]*>\s*\S[\s\S]*?<\/p>/,
+      summary ?? '',
+      /\S/,
       `${route} each selected paper must include a non-empty research introduction`,
     );
     assert.match(
-      publication,
+      summary,
       summaryMarkers[index],
       `${route} paper ${index + 1} must render the correct localized introduction`,
     );
