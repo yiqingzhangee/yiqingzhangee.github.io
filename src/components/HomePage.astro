@@ -88,11 +88,12 @@ const labels = {
       <div>
         <p class="eyebrow">{labels.publications}</p>
         <ol class="publication-list">
-          {profile.publications.slice(0, 3).map((publication) => (
+          {profile.publications.map((publication) => (
             <li>
               <p class="publication-meta">{publication.year} · {publication.venue}</p>
               <h3><a href={publication.url} target="_blank" rel="noreferrer">{publication.title}</a></h3>
-              <p>{publication.authors}</p>
+              <p class="publication-authors">{publication.authors}</p>
+              <p class="publication-summary">{publication.summary[lang]}</p>
             </li>
           ))}
         </ol>

@@ -292,11 +292,12 @@ h3 {
   border-left: 1px solid var(--rule);
 }
 
-.impact-list li:first-child {
+.impact-list li:nth-child(3n + 1) {
+  border-left: 0;
   padding-left: 0;
 }
 
-.impact-list li:last-child {
+.impact-list li:nth-child(3n) {
   padding-right: 0;
 }
 
@@ -395,6 +396,20 @@ h3 {
   font-size: 0.8rem;
   line-height: 1.55;
   margin-bottom: 0;
+}
+
+.publication-list .publication-authors {
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  margin-bottom: 0;
+}
+
+.publication-list .publication-summary {
+  color: var(--graphite);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  margin: 0.7rem 0 0;
 }
 
 .writing-feature {
@@ -673,6 +688,7 @@ h3 {
   }
 
   .impact-list li {
+    border-left: 0;
     padding: 1.5rem 0;
   }
 

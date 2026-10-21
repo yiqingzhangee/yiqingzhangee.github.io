@@ -93,8 +93,8 @@ function assertImpactHasNoFigures(route, html) {
 
   assert.equal(
     projects.length,
-    3,
-    `${route} selected-impact section must render exactly three projects`,
+    6,
+    `${route} selected-impact section must render exactly six projects`,
   );
 
   for (const project of projects) {
@@ -137,6 +137,57 @@ function assertImpactHasNoFigures(route, html) {
 assertImpactHasNoFigures('/', rootHome);
 assertImpactHasNoFigures('/zh/', zhHome);
 assertImpactHasNoFigures('/en/', enHome);
+
+function assertPublicationIntroductions(route, html, sectionPattern) {
+  const section = html.match(sectionPattern)?.[0];
+
+  assert.ok(section, `${route} must render the selected-publications section`);
+
+  const publicationList = section.match(
+    /<ol\b[^>]*\bclass="[^"]*\bpublication-list\b[^"]*"[^>]*>([\s\S]*?)<\/ol>/,
+  )?.[1];
+
+  assert.notEqual(publicationList, undefined, `${route} must render a publication list`);
+
+  const publications = [...publicationList.matchAll(/<li>([\s\S]*?)<\/li>/g)].map(([, publication]) => publication);
+
+  assert.equal(
+    publications.length,
+    6,
+    `${route} selected-publications section must render exactly six papers`,
+  );
+
+  for (const publication of publications) {
+    assert.match(
+      publication,
+      /<p\b[^>]*\bclass="[^"]*\bpublication-summary\b[^"]*"[^>]*>\s*\S[\s\S]*?<\/p>/,
+      `${route} each selected paper must include a non-empty research introduction`,
+    );
+  }
+}
+
+for (const [route, html] of [
+  ['/', rootHome],
+  ['/zh/', zhHome],
+  ['/en/', enHome],
+]) {
+  assertPublicationIntroductions(
+    route,
+    html,
+    /<section class="section-band section-research"[\s\S]*?<\/section>/,
+  );
+}
+
+for (const [route, html] of [
+  ['/zh/about/', zhAbout],
+  ['/en/about/', enAbout],
+]) {
+  assertPublicationIntroductions(
+    route,
+    html,
+    /<section aria-labelledby="publications-title">[\s\S]*?<\/section>/,
+  );
+}
 
 function assertWritingListDescriptions(route, html) {
   const articleList = html.match(/<ul\b[^>]*\bclass="[^"]*\barticle-list\b[^"]*"[^>]*>([\s\S]*?)<\/ul>/)?.[1];

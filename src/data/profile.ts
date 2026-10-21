@@ -62,6 +62,7 @@ export interface Publication {
   venue: string;
   year: number;
   url: string;
+  summary: Record<Locale, string>;
 }
 
 export interface Toolkit {
@@ -109,13 +110,21 @@ const publications: readonly Publication[] = [
     venue: 'The VLDB Journal, 31, 1085–1101',
     year: 2022,
     url: 'https://doi.org/10.1007/s00778-021-00723-z',
+    summary: {
+      zh: '将风险团伙识别转化为面向种子实体的社区搜索，并把图算法、索引与交互分析整合为电商风险发现平台，连接图研究与生产风控。',
+      en: 'Turns risky-group detection into seed-oriented community search and combines graph algorithms, indexing, and interactive analysis in a production e-commerce risk platform.',
+    },
   },
   {
     title: 'Spectral Analysis of Epidemic Thresholds of Temporal Networks',
     authors: 'Y.-Q. Zhang, X. Li, A. V. Vasilakos',
     venue: 'IEEE Transactions on Cybernetics, 50(5), 1965–1977',
     year: 2020,
-    url: 'https://ieeexplore.ieee.org/document/8031280',
+    url: 'https://doi.org/10.1109/TCYB.2017.2743003',
+    summary: {
+      zh: '从时序网络的谱结构出发刻画传播阈值，说明接触顺序与网络切换会改变静态聚合网络无法表达的传播条件。',
+      en: 'Characterizes epidemic thresholds through the spectral structure of temporal networks, showing how contact order and network switching alter spreading conditions hidden by static aggregation.',
+    },
   },
   {
     title: 'Human Interactive Patterns in Temporal Networks',
@@ -123,20 +132,43 @@ const publications: readonly Publication[] = [
     venue: 'IEEE Transactions on Systems, Man, and Cybernetics: Systems, 45(2), 214–222',
     year: 2015,
     url: 'https://doi.org/10.1109/TSMC.2014.2360505',
+    summary: {
+      zh: '利用真实交互数据分析人类接触的时间异质性，刻画活动节律、持续时间与时间路径之间的关系，为时序网络建模提供实证基础。',
+      en: 'Uses empirical interaction data to study temporal heterogeneity in human contact, linking activity rhythms, duration, and temporal paths to ground temporal-network models in observed behavior.',
+    },
   },
   {
-    title: 'Towards a Temporal Network Analysis of Interactive WiFi Users',
-    authors: 'Y. Zhang, L. Wang, Y.-Q. Zhang, X. Li',
-    venue: 'EPL (Europhysics Letters), 98(6), 68002',
-    year: 2012,
-    url: 'https://arxiv.org/abs/1206.4781',
+    title: 'Temporal Dynamics and Impact of Event Interactions in Cyber-Social Populations',
+    authors: 'Y.-Q. Zhang, X. Li',
+    venue: 'Chaos, 23(1), 013131',
+    year: 2013,
+    url: 'https://doi.org/10.1063/1.4793540',
+    summary: {
+      zh: '从大规模校园 WiFi 记录中定义群体事件交互，研究多人共现活动的时间规律及其对赛博社会群体结构与动态的影响。',
+      en: 'Defines group event interactions from large-scale campus WiFi records and studies how the timing of multi-person co-location shapes cyber-social population structure and dynamics.',
+    },
   },
   {
-    title: 'Evolution of Scaling Emergence in Large-Scale Spatial Epidemic Spreading',
-    authors: 'L. Wang, X. Li, Y.-Q. Zhang, Y. Zhang, K. Zhang',
-    venue: 'PLOS ONE, 6(7), e21197',
-    year: 2011,
-    url: 'https://doi.org/10.1371/journal.pone.0021197',
+    title: 'Characterizing Bursts of Aggregate Pairs with Individual Poissonian Activity and Preferential Mobility',
+    authors: 'Y.-Q. Zhang, X. Li, D. Liang, J. Cui',
+    venue: 'IEEE Communications Letters, 19(7), 1225–1228',
+    year: 2015,
+    url: 'https://doi.org/10.1109/LCOMM.2015.2437382',
+    summary: {
+      zh: '解释个体近似泊松的活动与偏好移动如何在聚合交互对上形成突发行为，连接微观移动机制与宏观时间模式。',
+      en: 'Explains how near-Poisson individual activity and preferential mobility can produce bursty aggregate interaction pairs, connecting microscopic movement to macroscopic temporal patterns.',
+    },
+  },
+  {
+    title: 'Identifying Familiar Strangers in Human Encounter Networks',
+    authors: 'D. Liang, X. Li, Y.-Q. Zhang',
+    venue: 'EPL (Europhysics Letters), 116(1), 18006',
+    year: 2016,
+    url: 'https://doi.org/10.1209/0295-5075/116/18006',
+    summary: {
+      zh: '提出熟悉陌生人分类方法，从真实相遇网络中区分不同关系类型，揭示重复相遇但缺少显式社交连接的人群结构。',
+      en: 'Introduces a familiar-stranger classifier that separates relationship types in empirical encounter networks and reveals repeated co-presence without explicit social ties.',
+    },
   },
 ];
 
@@ -182,19 +214,34 @@ export const profileByLocale: Record<Locale, ProfileContent> = {
     evidence: ['ByteDance / TikTok', 'Ant Group', 'Fudan University', 'Hong Kong Baptist University'],
     selectedImpact: [
       {
-        title: '多模态风险模型推理优化',
+        title: '多模态审核模型对抗评测与分层防御',
         summary:
-          '让多模态风险模型在严格的线上资源约束下稳定运行。围绕显存、延迟、吞吐和视觉 token 成本，将优化从单点参数延伸到端到端推理链路。',
+          '建立覆盖攻击样本、误伤控制与回归验证的多模态对抗评测，将视觉证据、模型判断和审核策略拆分为可观察的防御层次，持续评估模型迭代后的风险变化。',
       },
       {
-        title: '对抗评测与分层防御',
+        title: 'VLM 端到端推理优化',
         summary:
-          '为多模态审核模型建立覆盖攻击样本、误伤控制与回归评估的对抗评测。将防御拆分为可验证的层次，让模型迭代后的风险变化能够被持续观察。',
+          '让多模态风险模型在严格的线上资源约束下稳定运行，围绕量化、缓存调度、解码加速与视觉 token 压缩优化显存、延迟和吞吐，形成可复用的生产推理链路。',
       },
       {
-        title: '图风控与团伙发现',
+        title: 'LLM 数据清洗与轻量模型持续重训',
         summary:
-          '将实时团伙发现建模为目标社区搜索，而非孤立样本分类。沉淀可复用的图挖掘与图深度学习能力，覆盖 20+ 风险场景并支持秒级风险社区发现。',
+          '以大模型承担高价值的数据清洗与质量判断，再由轻量模型承接高吞吐在线决策；通过反馈回流和自动重训，让审核策略能够持续更新而不依赖一次性离线交付。',
+      },
+      {
+        title: '多模态内容风险治理与反馈闭环',
+        summary:
+          '打通多路召回、视频抽帧、OCR、视觉模型、图像检索和人工审核，将处置结果回流到模型与风险库，形成能快速响应新型内容风险的可复用治理链路。',
+      },
+      {
+        title: '国际化电商营销风险感知平台',
+        summary:
+          '面向不同国家与市场阶段，融合设备、账号、地址、关系图和行为信号，建设统一的风险感知、实时决策与持续学习体系，同时保留区域化策略的调整空间。',
+      },
+      {
+        title: '支付风险图谱与欺诈团伙挖掘',
+        summary:
+          '把支付风险从孤立样本判断扩展到关系图上的协同团伙识别，结合社区搜索、图挖掘和图深度学习，在多个风险场景中沉淀可复用的团伙发现能力。',
       },
     ],
     experience: [
@@ -327,19 +374,34 @@ export const profileByLocale: Record<Locale, ProfileContent> = {
     evidence: ['ByteDance / TikTok', 'Ant Group', 'Fudan University', 'Hong Kong Baptist University'],
     selectedImpact: [
       {
-        title: 'Multimodal risk-model inference',
-        summary:
-          'Make multimodal risk models reliable under strict production resource limits. Optimize memory use, latency, throughput, and visual-token cost across the full inference path.',
-      },
-      {
         title: 'Adversarial evaluation and layered defense',
         summary:
-          'Build adversarial evaluation for multimodal moderation models across attack samples, false-positive controls, and regression checks. Separate defenses into verifiable layers so the risk effect of each model iteration remains visible.',
+          'Build multimodal adversarial evaluation across attack samples, false-positive controls, and regression checks. Separate visual evidence, model judgment, and review policy into observable defense layers so every model iteration can be assessed consistently.',
       },
       {
-        title: 'Graph-based fraud-ring discovery',
+        title: 'End-to-end VLM inference optimization',
         summary:
-          'Model real-time fraud-ring discovery as targeted community search rather than isolated-sample classification. Build reusable graph-mining and graph-learning capabilities across 20+ risk scenarios with second-level risky-community discovery.',
+          'Make multimodal risk models reliable under strict production constraints by optimizing quantization, cache scheduling, decoding, and visual-token compression across memory use, latency, and throughput.',
+      },
+      {
+        title: 'LLM data cleaning and continual lightweight-model retraining',
+        summary:
+          'Use large models for high-value data cleaning and quality decisions, then serve high-throughput online traffic with lightweight models. Feedback and automated retraining keep review strategies current beyond a one-off offline delivery.',
+      },
+      {
+        title: 'Multimodal content-risk governance and feedback',
+        summary:
+          'Connect multi-channel retrieval, dense video frames, OCR, vision models, image search, and human review. Feed enforcement outcomes back into models and risk repositories to create a reusable response loop for emerging content risks.',
+      },
+      {
+        title: 'International e-commerce marketing-risk platform',
+        summary:
+          'Unify device, account, address, graph, and behavioral signals across countries and market stages. Combine shared risk perception, real-time decisions, and continual learning with room for region-specific controls.',
+      },
+      {
+        title: 'Payment-risk graphs and fraud-ring mining',
+        summary:
+          'Extend payment-risk decisions from isolated samples to coordinated entities in relational graphs. Combine community search, graph mining, and graph deep learning into reusable fraud-ring discovery across multiple risk scenarios.',
       },
     ],
     experience: [

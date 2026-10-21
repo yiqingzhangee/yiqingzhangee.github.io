@@ -82,7 +82,8 @@ const labels = lang === 'zh'
           <li>
             <p class="publication-meta">{publication.year} · {publication.venue}</p>
             <h3><a href={publication.url} target="_blank" rel="noreferrer">{publication.title}</a></h3>
-            <p>{publication.authors}</p>
+            <p class="publication-authors">{publication.authors}</p>
+            <p class="publication-summary">{publication.summary[lang]}</p>
           </li>
         ))}
       </ol>
