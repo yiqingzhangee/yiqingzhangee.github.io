@@ -308,6 +308,24 @@ assert.doesNotMatch(
   '/en/posts/ must not contain the removed bilingual-workflow article',
 );
 
+for (const [route, html, title] of [
+  ['/zh/writing/', zhWriting, /Astro 适合个人网站吗？一次从内容出发的选择/],
+  ['/en/writing/', enWriting, /Is Astro right for a personal site\? A content-first decision/],
+  ['/zh/reviews/', zhReviews, /Astro 适合个人网站吗？一次从内容出发的选择/],
+  ['/en/reviews/', enReviews, /Is Astro right for a personal site\? A content-first decision/],
+]) {
+  assert.doesNotMatch(
+    html,
+    title,
+    `${route} must not contain the removed Astro personal-site review`,
+  );
+  assert.doesNotMatch(
+    html,
+    /href="\/(?:zh|en)\/reviews\/astro-for-personal-sites\/"/,
+    `${route} must not link to the removed Astro personal-site review`,
+  );
+}
+
 async function collectHtml(directory) {
   const files = [];
 
@@ -339,6 +357,11 @@ assert.doesNotMatch(
   generatedHtml,
   /从一篇文章开始：双语技术博客的最小工作流/,
   'Generated output must not contain the removed bilingual-workflow article',
+);
+assert.doesNotMatch(
+  generatedHtml,
+  /Astro 适合个人网站吗？一次从内容出发的选择|Is Astro right for a personal site\? A content-first decision|\/reviews\/astro-for-personal-sites\//,
+  'Generated output must not contain the removed Astro personal-site review',
 );
 
 console.log('Generated site verification passed.');
